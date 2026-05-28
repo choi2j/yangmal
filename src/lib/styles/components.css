@@ -1,0 +1,172 @@
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	width: 100%;
+}
+
+/* 바깥 래퍼 (header / dropdown / footer 공용) */
+.header .header-inner,
+.header .dropdown,
+.footer .footer-inner {
+	width: 100%;
+	background: #fff;
+	color: #000;
+}
+
+/* 가운데로 모이는 내부 콘텐츠 (공용) */
+.header .header-content,
+.header .dropdown-content,
+.footer .footer-content {
+	max-width: 70%;
+	margin: 0 auto;
+}
+
+/* 배경과 살짝 구분되도록 아주 옅은 그림자 */
+.header .header-inner {
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ─ 상단 바 ─ */
+.header .header-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.25rem 0;
+}
+
+/* 로고 (header / footer 공용) */
+.logo {
+	font-size: 1.5rem;
+}
+
+.logo-name {
+	font-weight: 700;
+	color: #000;
+}
+
+.logo-tld {
+	font-weight: 300;
+	color: #999;
+}
+
+/* nav 리스트 (header nav-main / dropdown / footer 동일한 간격·정렬·크기) */
+.header .nav-main ul,
+.header .dropdown ul,
+.footer .footer-nav ul {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 2.5rem;
+	font-size: 0.95rem;
+	letter-spacing: 0.04em;
+}
+
+.header .nav-main a,
+.header .nav-main button,
+.header .dropdown a,
+.footer .footer-nav a {
+	color: #000;
+	font-size: inherit;
+	letter-spacing: inherit;
+	transition: opacity 0.15s ease;
+}
+
+.header .nav-main a:hover,
+.header .nav-main button:hover,
+.header .dropdown a:hover,
+.footer .footer-nav a:hover {
+	opacity: 0.55;
+}
+
+/* ─ 드롭다운: 헤더 하단으로 빠르게 슬라이드 다운 ─ */
+.header .dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 10;
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+	transition:
+		max-height 0.18s ease,
+		opacity 0.18s ease;
+}
+
+.header .dropdown.is-open {
+	max-height: 240px;
+	opacity: 1;
+}
+
+.header .dropdown-content {
+	padding: 1.25rem 0;
+}
+
+/* ───────── Footer ───────── */
+.footer .footer-inner {
+	border-top: 1px solid #eee;
+}
+
+.footer .footer-content {
+	padding: 3rem 0;
+}
+
+/* 상단: 로고(좌) + 메뉴(우) — header-content 와 동일한 배치 */
+.footer .footer-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 2rem;
+}
+
+/* 중단: 정보 컬럼 */
+.footer .footer-grid {
+	display: flex;
+	gap: 4rem;
+	padding: 2rem 0;
+	border-top: 1px solid #eee;
+}
+
+.footer .footer-col {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.footer .footer-col-label {
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	color: #000;
+}
+
+.footer .footer-company {
+	font-weight: 700;
+}
+
+.footer .footer-muted {
+	color: #999;
+}
+
+.footer .footer-col a {
+	color: #000;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: opacity 0.15s ease;
+}
+
+.footer .footer-col a:hover {
+	opacity: 0.55;
+}
+
+/* 하단: 카피라이트 */
+.footer .footer-bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 2rem;
+	border-top: 1px solid #eee;
+	font-size: 0.85rem;
+	color: #999;
+}
