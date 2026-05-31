@@ -47,8 +47,8 @@ export const categories: Category[] = [
 				name: '트레킹 쿠션 크루',
 				slug: 'trekking-cushion-crew',
 				images: [img('hiking_item'), img('hiking_description_01'), img('hiking_description_02')],
-				price: 15000,
-				salePrice: 11900,
+				price: 990,
+				salePrice: 790,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('hiking_description_01'), img('hiking_description_02')]
 			}
@@ -68,8 +68,8 @@ export const categories: Category[] = [
 				name: '데일리 베이직 3팩',
 				slug: 'daily-basic-3pack',
 				images: [img('student_item'), img('student_description_01'), img('student_description_02')],
-				price: 12000,
-				salePrice: 8900,
+				price: 890,
+				salePrice: 690,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('student_description_01'), img('student_description_02')]
 			}
@@ -89,8 +89,8 @@ export const categories: Category[] = [
 				name: '비즈니스 정장 양말',
 				slug: 'business-dress',
 				images: [img('men_item'), img('men_description_01'), img('men_description_02')],
-				price: 9000,
-				salePrice: 6900,
+				price: 790,
+				salePrice: 590,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [
 					img('men_description_01'),
@@ -116,8 +116,8 @@ export const categories: Category[] = [
 				name: '패턴 패션 삭스',
 				slug: 'pattern-fashion',
 				images: [img('women_item'), img('women_description_01'), img('women_description_02')],
-				price: 8000,
-				salePrice: 5900,
+				price: 690,
+				salePrice: 490,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('women_description_01'), img('women_description_02')]
 			}

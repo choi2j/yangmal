@@ -247,16 +247,9 @@
 			모든 상품의 구매, 결제, 배송은 네이버 스마트스토어를 통해 안전하고 빠르게 진행됩니다.
 			후기와 Q&amp;A도 스토어에서 확인하실 수 있습니다.
 		</p>
-		<a
-			class="store-btn"
-			href="https://smartstore.naver.com/yangmal_socks"
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			<span class="store-mark" aria-hidden="true">N</span>
-			<span>스마트스토어 바로가기</span>
-			<span class="store-arrow" aria-hidden="true">→</span>
-		</a>
+		<button class="store-btn" type="button" disabled>
+			<span>판매 예정 상품</span>
+		</button>
 	</div>
 </section>
 
@@ -634,6 +627,18 @@
 	.store-btn:hover {
 		background: rgba(255, 255, 255, 0.88);
 		transform: translateY(-1px);
+	}
+
+	.store-btn:disabled {
+		background: rgba(255, 255, 255, 0.35);
+		color: rgba(26, 26, 26, 0.7);
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	.store-btn:disabled:hover {
+		background: rgba(255, 255, 255, 0.35);
+		transform: none;
 	}
 
 	.store-mark {

@@ -126,15 +126,23 @@
 				</div>
 			</dl>
 
-			<!-- 외부 스마트스토어 링크라 resolve() 대상이 아님 -->
-			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-			<a class="buy-btn" href={item.smartStoreUrl} target="_blank" rel="noopener noreferrer">
-				<span class="buy-mark" aria-hidden="true">N</span>
-				<span class="buy-label">네이버 스마트스토어에서 구매하기</span>
-				<span class="buy-arrow" aria-hidden="true">→</span>
-			</a>
+			{#if category.slug === 'hiking'}
+				<!-- 외부 스마트스토어 링크라 resolve() 대상이 아님 -->
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+				<a class="buy-btn" href={item.smartStoreUrl} target="_blank" rel="noopener noreferrer">
+					<span class="buy-mark" aria-hidden="true">N</span>
+					<span class="buy-label">네이버 스마트스토어에서 구매하기</span>
+					<span class="buy-arrow" aria-hidden="true">→</span>
+				</a>
 
-			<p class="buy-note">결제 및 배송은 네이버 스마트스토어를 통해 안전하게 진행됩니다.</p>
+				<p class="buy-note">결제 및 배송은 네이버 스마트스토어를 통해 안전하게 진행됩니다.</p>
+			{:else}
+				<button class="buy-btn" type="button" disabled>
+					<span class="buy-label">판매 예정 상품</span>
+				</button>
+
+				<p class="buy-note">현재 판매 준비 중인 상품입니다. 곧 만나보실 수 있습니다.</p>
+			{/if}
 		</aside>
 	</div>
 </section>
@@ -426,6 +434,17 @@
 	.buy-btn:hover {
 		background-color: #a6845a;
 		gap: 1.1rem;
+	}
+
+	.buy-btn:disabled {
+		background-color: #d6d2cc;
+		color: #777;
+		cursor: not-allowed;
+	}
+
+	.buy-btn:disabled:hover {
+		background-color: #d6d2cc;
+		gap: 0.85rem;
 	}
 
 	.buy-mark {
