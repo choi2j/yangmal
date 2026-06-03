@@ -16,6 +16,7 @@
 		description: string;
 		slug: string;
 		image: string;
+		mobileImage: string;
 	};
 
 	const slides: Slide[] = [
@@ -23,25 +24,29 @@
 			title: '발끝까지 기능을 신다',
 			description: '오래 걸어도 편안한 쿠셔닝과 통기성의 등산 양말',
 			slug: 'hiking',
-			image: hikingHero
+			image: hikingHero,
+			mobileImage: hikingLineup
 		},
 		{
 			title: '매일이 편한 데일리 삭스',
 			description: '질리지 않는 베이직, 학생을 위한 가성비 라인',
 			slug: 'student',
-			image: studentHero
+			image: studentHero,
+			mobileImage: studentLineup
 		},
 		{
 			title: '단정함은 디테일에서',
 			description: '깔끔한 핏과 뛰어난 내구성의 남성 비즈니스 양말',
 			slug: 'men',
-			image: menHero
+			image: menHero,
+			mobileImage: menLineup
 		},
 		{
 			title: '코디의 마침표',
 			description: '다양한 컬러와 패턴으로 완성하는 여성 패션 양말',
 			slug: 'women',
-			image: womenHero
+			image: womenHero,
+			mobileImage: womenLineup
 		}
 	];
 
@@ -153,8 +158,8 @@
 	}
 </script>
 
-<section class="hero">
-	<div class="hero-viewport" use:autoplay>
+<section class="hero" use:autoplay>
+	<div class="hero-viewport">
 		<div
 			class="hero-track"
 			class:no-anim={!animate}
@@ -163,7 +168,10 @@
 			ontransitionend={handleTransitionEnd}
 		>
 			{#each display as slide, i (i)}
-				<article class="hero-slide" style="--bg: url({slide.image});">
+				<article
+					class="hero-slide"
+					style="--bg: url({slide.image}); --bg-mobile: url({slide.mobileImage});"
+				>
 					<div class="hero-overlay"></div>
 					<div class="hero-text">
 						<h2 class="hero-title">{slide.title}</h2>
@@ -178,23 +186,28 @@
 				</article>
 			{/each}
 		</div>
+	</div>
 
-		<div class="hero-nav">
-			<div class="hero-arrows">
-				<button class="hero-btn" type="button" aria-label="이전 슬라이드" onclick={onPrev}
-					>&#10094;</button
-				>
-				<button class="hero-btn" type="button" aria-label="다음 슬라이드" onclick={onNext}
-					>&#10095;</button
-				>
-			</div>
+	<div class="hero-nav">
+		<button
+			class="hero-btn hero-btn-prev"
+			type="button"
+			aria-label="이전 슬라이드"
+			onclick={onPrev}>&#10094;</button
+		>
 
-			<div class="hero-dots" aria-hidden="true">
-				{#each dotIndexes as i (i)}
-					<span class="hero-dot" class:active={i === realIndex}></span>
-				{/each}
-			</div>
+		<div class="hero-dots" aria-hidden="true">
+			{#each dotIndexes as i (i)}
+				<span class="hero-dot" class:active={i === realIndex}></span>
+			{/each}
 		</div>
+
+		<button
+			class="hero-btn hero-btn-next"
+			type="button"
+			aria-label="다음 슬라이드"
+			onclick={onNext}>&#10095;</button
+		>
 	</div>
 </section>
 
@@ -255,17 +268,14 @@
 
 <style>
 	.hero {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		position: relative;
 		max-width: 70%;
 		margin: 2.5rem auto;
 	}
 
 	.hero-viewport {
 		position: relative;
-		flex: 1;
-		min-width: 0;
+		width: 100%;
 		aspect-ratio: 16 / 9;
 		border-radius: 1.25rem;
 		overflow: hidden;
@@ -346,22 +356,27 @@
 		transform: translateY(-1px);
 	}
 
-	/* 우측 하단: 화살표 + 인디케이터 묶음 */
+	/* 데스크탑: 우측 하단에 화살표(위) + 인디케이터(아래) 그리드로 배치 */
 	.hero-nav {
 		position: absolute;
 		right: 1.5rem;
 		bottom: 1.5rem;
 		z-index: 3;
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: auto auto;
 		align-items: center;
-		gap: 0.6rem;
+		row-gap: 0.6rem;
+		column-gap: 0.25rem;
 	}
 
-	/* 인디케이터 위, 두 화살표를 붙여서 배치 */
-	.hero-arrows {
-		display: flex;
-		gap: 0.25rem;
+	.hero-btn-prev {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.hero-btn-next {
+		grid-column: 2;
+		grid-row: 1;
 	}
 
 	/* 좌우 이동 버튼 (배경 없이 이미지 위에 표시) */
@@ -387,6 +402,9 @@
 
 	/* 위치 인디케이터 */
 	.hero-dots {
+		grid-column: 1 / -1;
+		grid-row: 2;
+		justify-self: center;
 		display: flex;
 		gap: 0.5rem;
 	}
@@ -566,6 +584,11 @@
 			gap: 1.5rem;
 		}
 
+		.lineup-item:not(.reverse) .lineup-body,
+		.lineup-item.reverse .lineup-body {
+			text-align: left;
+		}
+
 		.lineup-image {
 			flex: none;
 			width: 100%;
@@ -663,8 +686,85 @@
 	}
 
 	@media (max-width: 768px) {
+		.hero {
+			max-width: 92%;
+			margin: 1.25rem auto;
+		}
+
+		.hero-viewport {
+			aspect-ratio: 1 / 1;
+		}
+
+		.hero-slide {
+			background-image: var(--bg-mobile);
+		}
+
+		.hero-text {
+			max-width: 100%;
+			padding: 1.5rem 1.5rem 1.75rem;
+		}
+
+		.hero-title {
+			font-size: clamp(1.15rem, 5vw, 1.6rem);
+		}
+
+		.hero-desc {
+			font-size: 0.85rem;
+			margin-top: 0.4rem;
+		}
+
+		.hero-cta {
+			margin-top: 0.85rem;
+			padding: 0.5rem 1.1rem;
+			font-size: 0.82rem;
+		}
+
+		/* 모바일: 화살표 - 인디케이터 - 화살표 한 줄로, 히어로 아래 */
+		.hero-nav {
+			position: static;
+			margin: 0.85rem auto 0;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			gap: 1.25rem;
+		}
+
+		.hero-btn {
+			color: #1a1a1a;
+		}
+
+		.hero-btn:hover {
+			color: #555;
+			transform: scale(1.08);
+		}
+
+		.hero-dot {
+			background: rgba(26, 26, 26, 0.25);
+		}
+
+		.hero-dot.active {
+			background: #1a1a1a;
+		}
+
+		.intro {
+			max-width: 88%;
+			margin: 3.5rem auto;
+		}
+
+		.lineup-head {
+			max-width: 88%;
+			margin: 3.5rem auto;
+		}
+
+		.lineup {
+			max-width: 88%;
+			margin: 2rem auto 4rem;
+			gap: 3rem;
+		}
+
 		.store-cta-inner {
-			max-width: 85%;
+			max-width: 88%;
 			padding: 4.5rem 0;
 		}
 	}

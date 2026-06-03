@@ -170,3 +170,66 @@
 	font-size: 0.85rem;
 	color: #999;
 }
+
+/* ───────── 모바일: header / footer ───────── */
+@media (max-width: 768px) {
+	.header .header-content,
+	.header .dropdown-content,
+	.footer .footer-content {
+		max-width: 90%;
+	}
+
+	.header .header-content {
+		padding: 0.9rem 0;
+	}
+
+	.logo {
+		font-size: 1.2rem;
+	}
+
+	.header .nav-main ul,
+	.header .dropdown ul {
+		gap: 1.25rem;
+		font-size: 0.82rem;
+	}
+
+	.header .dropdown-content {
+		padding: 1rem 0;
+	}
+
+	.footer .footer-content {
+		padding: 2.5rem 0;
+	}
+
+	/* 푸터 상단: 로고 + 메뉴 세로 적층 */
+	.footer .footer-top {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.25rem;
+		padding-bottom: 1.5rem;
+	}
+
+	/* 푸터 메뉴: 항목 6개 → 줄바꿈 허용 + 간격 축소 */
+	.footer .footer-nav ul {
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 0.6rem 1.1rem;
+		font-size: 0.82rem;
+	}
+
+	/* 회사/문의 컬럼 세로 적층 */
+	.footer .footer-grid {
+		flex-direction: column;
+		gap: 1.75rem;
+		padding: 1.75rem 0;
+	}
+
+	/* 카피라이트 줄 세로 적층 */
+	.footer .footer-bottom {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.4rem;
+		padding-top: 1.5rem;
+		font-size: 0.78rem;
+	}
+}
