@@ -44,7 +44,7 @@ export const categories: Category[] = [
 		hero: img('hiking_hero'),
 		items: [
 			{
-				name: '트레킹 쿠션 크루',
+				name: '스페셜쿨트레킹양말',
 				slug: 'trekking-cushion-crew',
 				images: [img('hiking_item'), img('hiking_description_01'), img('hiking_description_02')],
 				price: 990,
