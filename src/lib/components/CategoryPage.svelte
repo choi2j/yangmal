@@ -6,8 +6,8 @@
 </script>
 
 <section class="hero">
-	<div class="hero-inner">
-		<div class="hero-bg" style="background-image: url({category.hero});" aria-hidden="true"></div>
+	<div class="hero-inner" style="--hero-bg: url({category.hero}); --hero-bg-mobile: url({category.heroMobile});">
+		<div class="hero-bg" aria-hidden="true"></div>
 		<div class="hero-overlay" aria-hidden="true"></div>
 
 		<div class="hero-text">
@@ -96,6 +96,7 @@
 	.hero-bg {
 		position: absolute;
 		inset: 0;
+		background-image: var(--hero-bg);
 		background-size: cover;
 		background-position: center;
 		z-index: -2;
@@ -332,6 +333,16 @@
 		.hero,
 		.catalog {
 			max-width: 85%;
+		}
+
+		/* 모바일: main hero와 동일하게 1:1 라인업 이미지로 전환 (가로 넘침 방지) */
+		.hero-inner {
+			aspect-ratio: 1 / 1;
+			min-height: 0;
+		}
+
+		.hero-bg {
+			background-image: var(--hero-bg-mobile);
 		}
 
 		.hero-text {

@@ -20,7 +20,9 @@
 	// 사이트 헤더가 sticky(top:0)라 탭 내비를 그 아래에 붙이고, 스크롤 보정에도 사용
 	let headerHeight = $state(0);
 
-	const discountPct = $derived(Math.round(((item.price - item.salePrice) / item.price) * 100));
+	const discountPct = $derived(
+		item.discountRate ?? Math.round(((item.price - item.salePrice) / item.price) * 100)
+	);
 
 	function scrollToSection(id: string) {
 		const el = document.getElementById(`section-${id}`);

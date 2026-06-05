@@ -4,6 +4,8 @@ export type Product = {
 	images: string[];
 	price: number;
 	salePrice: number;
+	/** 표기용 할인율(%). 지정 시 가격에서 자동 계산한 값 대신 이 값을 사용한다. */
+	discountRate?: number;
 	smartStoreUrl: string;
 	detailImages: string[];
 };
@@ -14,6 +16,8 @@ export type Category = {
 	tagline: string;
 	description: string[];
 	hero: string;
+	/** 모바일 hero용 1:1 라인업 이미지 */
+	heroMobile: string;
 	items: Product[];
 };
 
@@ -42,13 +46,15 @@ export const categories: Category[] = [
 			'발바닥·발목·발등 부위별로 짜임을 다르게 해 충격을 분산하고, 흘러내림 없이 발을 단단히 잡아줍니다.'
 		],
 		hero: img('hiking_hero'),
+		heroMobile: img('hiking_lineup'),
 		items: [
 			{
 				name: '스페셜쿨트레킹양말',
 				slug: 'trekking-cushion-crew',
 				images: [img('hiking_item'), img('hiking_description_01'), img('hiking_description_02')],
-				price: 990,
-				salePrice: 790,
+				price: 5900,
+				salePrice: 4900,
+				discountRate: 16,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('hiking_description_01'), img('hiking_description_02')]
 			}
@@ -63,6 +69,7 @@ export const categories: Category[] = [
 			'잦은 세탁에도 형태가 변하지 않는 탄탄한 조직과 부드러운 면 혼방으로 하루 종일 쾌적합니다.'
 		],
 		hero: img('student_hero'),
+		heroMobile: img('student_lineup'),
 		items: [
 			{
 				name: '데일리 베이직 3팩',
@@ -84,6 +91,7 @@ export const categories: Category[] = [
 			'땀과 냄새를 줄여주는 항균·소취 가공으로, 오래 신어도 산뜻함을 유지합니다.'
 		],
 		hero: img('men_hero'),
+		heroMobile: img('men_lineup'),
 		items: [
 			{
 				name: '비즈니스 정장 양말',
@@ -111,6 +119,7 @@ export const categories: Category[] = [
 			'얇고 부드러운 원사로 신발 안에서도 답답함 없이, 발이 편안한 여성 양말입니다.'
 		],
 		hero: img('women_hero'),
+		heroMobile: img('women_lineup'),
 		items: [
 			{
 				name: '패턴 패션 삭스',
