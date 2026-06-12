@@ -20,8 +20,11 @@
 	// 사이트 헤더가 sticky(top:0)라 탭 내비를 그 아래에 붙이고, 스크롤 보정에도 사용
 	let headerHeight = $state(0);
 
+	const hasPrice = $derived(item.price !== null && item.salePrice !== null);
 	const discountPct = $derived(
-		item.discountRate ?? Math.round(((item.price - item.salePrice) / item.price) * 100)
+		item.price !== null && item.salePrice !== null
+			? (item.discountRate ?? Math.round(((item.price - item.salePrice) / item.price) * 100))
+			: 0
 	);
 
 	function scrollToSection(id: string) {
@@ -113,19 +116,26 @@
 			<p class="info-tagline">{category.tagline}</p>
 
 			<dl class="prices">
-				<div class="price-row">
-					<dt>판매가</dt>
-					<dd class="strike">{formatPriceKRW(item.price)}</dd>
-				</div>
-				<div class="price-row sale">
-					<dt>할인판매가</dt>
-					<dd class="accent">
-						<span class="amount">{formatPriceKRW(item.salePrice)}</span>
-						{#if discountPct > 0}
-							<span class="badge">−{discountPct}%</span>
-						{/if}
-					</dd>
-				</div>
+				{#if hasPrice}
+					<div class="price-row">
+						<dt>판매가</dt>
+						<dd class="strike">{formatPriceKRW(item.price as number)}</dd>
+					</div>
+					<div class="price-row sale">
+						<dt>할인판매가</dt>
+						<dd class="accent">
+							<span class="amount">{formatPriceKRW(item.salePrice as number)}</span>
+							{#if discountPct > 0}
+								<span class="badge">−{discountPct}%</span>
+							{/if}
+						</dd>
+					</div>
+				{:else}
+					<div class="price-row">
+						<dt>판매가</dt>
+						<dd>미정</dd>
+					</div>
+				{/if}
 			</dl>
 
 			{#if category.slug === 'hiking'}

@@ -2,8 +2,10 @@ export type Product = {
 	name: string;
 	slug: string;
 	images: string[];
-	price: number;
-	salePrice: number;
+	/** 가격 미정 시 null */
+	price: number | null;
+	/** 가격 미정 시 null */
+	salePrice: number | null;
 	/** 표기용 할인율(%). 지정 시 가격에서 자동 계산한 값 대신 이 값을 사용한다. */
 	discountRate?: number;
 	smartStoreUrl: string;
@@ -75,8 +77,8 @@ export const categories: Category[] = [
 				name: '데일리 베이직 3팩',
 				slug: 'daily-basic-3pack',
 				images: [img('student_item'), img('student_description_01'), img('student_description_02')],
-				price: 890,
-				salePrice: 690,
+				price: null,
+				salePrice: null,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('student_description_01'), img('student_description_02')]
 			}
@@ -97,8 +99,8 @@ export const categories: Category[] = [
 				name: '비즈니스 정장 양말',
 				slug: 'business-dress',
 				images: [img('men_item'), img('men_description_01'), img('men_description_02')],
-				price: 790,
-				salePrice: 590,
+				price: null,
+				salePrice: null,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [
 					img('men_description_01'),
@@ -125,8 +127,8 @@ export const categories: Category[] = [
 				name: '패턴 패션 삭스',
 				slug: 'pattern-fashion',
 				images: [img('women_item'), img('women_description_01'), img('women_description_02')],
-				price: 690,
-				salePrice: 490,
+				price: null,
+				salePrice: null,
 				smartStoreUrl: SMARTSTORE_URL,
 				detailImages: [img('women_description_01'), img('women_description_02')]
 			}
