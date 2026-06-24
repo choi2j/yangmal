@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	import hikingHero from '$lib/assets/hiking_hero.png';
-	import studentHero from '$lib/assets/student_hero.png';
-	import menHero from '$lib/assets/men_hero.png';
-	import womenHero from '$lib/assets/women_hero.png';
+	import hikingHero from '$lib/assets/hiking/hiking_hero.png';
+	import studentHero from '$lib/assets/student/student_hero.png';
+	import menHero from '$lib/assets/men/men_hero.png';
+	import womenHero from '$lib/assets/women/women_hero.png';
 
-	import hikingLineup from '$lib/assets/hiking_lineup.png';
-	import studentLineup from '$lib/assets/student_lineup.png';
-	import menLineup from '$lib/assets/men_lineup.png';
-	import womenLineup from '$lib/assets/women_lineup.png';
+	import hikingLineup from '$lib/assets/hiking/hiking_lineup.png';
+	import studentLineup from '$lib/assets/student/student_lineup.png';
+	import menItem from '$lib/assets/men/men_item.png';
+	import womenLineup from '$lib/assets/women/women_lineup.png';
 
 	type Slide = {
 		title: string;
@@ -39,7 +39,7 @@
 			description: '깔끔한 핏과 뛰어난 내구성의 남성 비즈니스 양말',
 			slug: 'men',
 			image: menHero,
-			mobileImage: menLineup
+			mobileImage: menItem
 		},
 		{
 			title: '코디의 마침표',
@@ -82,7 +82,7 @@
 			slug: 'men',
 			description:
 				'슈트에도 캐주얼에도 어울리는 단정한 핏. 발목을 편안하게 잡아주는 밴드와 오래가는 마감으로 비즈니스 룩을 완성합니다.',
-			image: menLineup
+			image: menItem
 		},
 		{
 			name: '여성양말',

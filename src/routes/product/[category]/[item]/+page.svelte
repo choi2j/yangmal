@@ -94,14 +94,14 @@
 							aria-label={`${i + 1}번째 이미지 보기`}
 							onclick={() => (activeImage = i)}
 						>
-							<img src={image} alt="" />
+							<img src={image} alt="" class:cover={i < 2} />
 						</button>
 					</li>
 				{/each}
 			</ul>
 
 			<div class="main-image">
-				<img src={item.images[activeImage]} alt={item.name} />
+				<img src={item.images[activeImage]} alt={item.name} class:cover={activeImage < 2} />
 			</div>
 		</div>
 
@@ -134,6 +134,13 @@
 					<div class="price-row">
 						<dt>판매가</dt>
 						<dd>미정</dd>
+					</div>
+				{/if}
+
+				{#if item.shippingFee != null}
+					<div class="price-row">
+						<dt>배송비</dt>
+						<dd>{formatPriceKRW(item.shippingFee)}</dd>
 					</div>
 				{/if}
 			</dl>
@@ -296,7 +303,6 @@
 		padding: 0;
 		overflow: hidden;
 		border-radius: 0.5rem;
-		background-color: #f0ece6;
 		border: 1px solid #eee;
 		cursor: pointer;
 		transition: border-color 0.2s ease;
@@ -305,8 +311,14 @@
 	.thumb img {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
 		display: block;
+	}
+
+	/* 대표 이미지(1·2번째)는 정사각형을 꽉 채우도록 crop 처리 */
+	.thumb img.cover,
+	.main-image img.cover {
+		object-fit: cover;
 	}
 
 	.thumb:hover {
@@ -321,13 +333,12 @@
 		aspect-ratio: 1 / 1;
 		overflow: hidden;
 		border-radius: 1rem;
-		background-color: #f0ece6;
 	}
 
 	.main-image img {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
 		display: block;
 	}
 

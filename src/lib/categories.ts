@@ -8,6 +8,8 @@ export type Product = {
 	salePrice: number | null;
 	/** 표기용 할인율(%). 지정 시 가격에서 자동 계산한 값 대신 이 값을 사용한다. */
 	discountRate?: number;
+	/** 배송비(원). 미지정 시 표기하지 않는다. */
+	shippingFee?: number;
 	smartStoreUrl: string;
 	detailImages: string[];
 };
@@ -24,14 +26,18 @@ export type Category = {
 };
 
 // src/lib/assets 의 이미지를 URL 문자열로 일괄 로드 (샘플 데이터용)
-const assets = import.meta.glob('./assets/*.png', {
+const assets = import.meta.glob('./assets/**/*.{png,jpg}', {
 	eager: true,
 	query: '?url',
 	import: 'default'
 }) as Record<string, string>;
 
 function img(name: string): string {
-	const url = assets[`./assets/${name}.png`];
+	// 파일명 접두어(hiking/men/student/women)를 카테고리 폴더로 사용한다.
+	const folder = name.split('_')[0];
+	const base = `./assets/${folder}/${name}`;
+	// 확장자(png/jpg)는 파일명에 포함하지 않고 자동으로 탐색한다.
+	const url = assets[`${base}.png`] ?? assets[`${base}.jpg`];
 	if (!url) throw new Error(`이미지 자산을 찾을 수 없습니다: ${name}`);
 	return url;
 }
@@ -93,22 +99,27 @@ export const categories: Category[] = [
 			'땀과 냄새를 줄여주는 항균·소취 가공으로, 오래 신어도 산뜻함을 유지합니다.'
 		],
 		hero: img('men_hero'),
-		heroMobile: img('men_lineup'),
+		heroMobile: img('men_item'),
 		items: [
 			{
-				name: '비즈니스 정장 양말',
-				slug: 'business-dress',
-				images: [img('men_item'), img('men_description_01'), img('men_description_02')],
-				price: null,
-				salePrice: null,
-				smartStoreUrl: SMARTSTORE_URL,
-				detailImages: [
-					img('men_description_01'),
-					img('men_description_02'),
-					img('men_description_03'),
-					img('men_description_04'),
-					img('men_description_05')
-				]
+				name: '데일리신사중목양말',
+				slug: 'daily-gentleman',
+				images: [
+					img('men_item'),
+					img('men_item_real'),
+					img('men_item_black_ps'),
+					img('men_item_gray_ps'),
+					img('men_item_mousegray_ps'),
+					img('men_flat_fold'),
+					img('men_flat_fold_ps'),
+					img('men_flat_straight_ps')
+				],
+				price: 3500,
+				salePrice: 2900,
+				discountRate: 17,
+				shippingFee: 3000,
+				smartStoreUrl: '',
+				detailImages: [img('men_description_01'), img('men_description_02')]
 			}
 		]
 	},
