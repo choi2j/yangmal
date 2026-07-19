@@ -1,0 +1,153 @@
+{
+	"smartStoreUrl": "https://smartstore.naver.com/yangmal_socks",
+	"categories": [
+		{
+			"name": { "ko": "등산양말", "en": "Hiking Socks" },
+			"slug": "hiking",
+			"tagline": { "ko": "발끝까지 기능을 신다", "en": "Function, from Heel to Toe" },
+			"description": [
+				{
+					"ko": "험한 산길에서도 발을 보호하는 두툼한 쿠셔닝과 땀을 빠르게 배출하는 통기성 설계로, 장시간 산행에도 물집 걱정 없이 편안합니다.",
+					"en": "Thick cushioning protects your feet on rough trails, while a breathable knit wicks sweat fast — so even long hikes stay comfortable and blister-free."
+				},
+				{
+					"ko": "발바닥·발목·발등 부위별로 짜임을 다르게 해 충격을 분산하고, 흘러내림 없이 발을 단단히 잡아줍니다.",
+					"en": "Zoned knitting across the sole, ankle, and instep disperses impact and holds your foot securely without slipping down."
+				}
+			],
+			"hero": "/images/hiking_hero.png",
+			"heroMobile": "/images/hiking_lineup.png",
+			"items": [
+				{
+					"name": { "ko": "스페셜쿨트레킹양말", "en": "Special Cool Trekking Socks" },
+					"slug": "trekking-cushion-crew",
+					"images": [
+						"/images/hiking_item.png",
+						"/images/hiking_description_01.png",
+						"/images/hiking_description_02.png"
+					],
+					"price": 5900,
+					"salePrice": 4900,
+					"discountRate": 16,
+					"smartStoreUrl": "https://smartstore.naver.com/yangmal_socks",
+					"detailImages": [
+						"/images/hiking_description_01.png",
+						"/images/hiking_description_02.png"
+					]
+				}
+			]
+		},
+		{
+			"name": { "ko": "학생양말", "en": "Student Socks" },
+			"slug": "student",
+			"tagline": { "ko": "매일이 편한 데일리 삭스", "en": "Everyday Comfort, Daily Socks" },
+			"description": [
+				{
+					"ko": "매일 신어도 부담 없는 가성비 베이직 라인으로, 질리지 않는 컬러와 튼튼한 내구성으로 활동량 많은 학생에게 딱 맞습니다.",
+					"en": "A great-value basic line you can wear every day, with timeless colors and rugged durability that suit active students perfectly."
+				},
+				{
+					"ko": "잦은 세탁에도 형태가 변하지 않는 탄탄한 조직과 부드러운 면 혼방으로 하루 종일 쾌적합니다.",
+					"en": "A firm knit that keeps its shape through frequent washing, plus a soft cotton blend that stays comfortable all day."
+				}
+			],
+			"hero": "/images/student_hero.png",
+			"heroMobile": "/images/student_lineup.png",
+			"items": [
+				{
+					"name": { "ko": "데일리 베이직 3팩", "en": "Daily Basic 3-Pack" },
+					"slug": "daily-basic-3pack",
+					"images": [
+						"/images/student_item.png",
+						"/images/student_description_01.png",
+						"/images/student_description_02.png"
+					],
+					"price": null,
+					"salePrice": null,
+					"smartStoreUrl": "https://smartstore.naver.com/yangmal_socks",
+					"detailImages": [
+						"/images/student_description_01.png",
+						"/images/student_description_02.png"
+					]
+				}
+			]
+		},
+		{
+			"name": { "ko": "남성양말", "en": "Men's Socks" },
+			"slug": "men",
+			"tagline": { "ko": "단정함은 디테일에서", "en": "Sharp Is in the Details" },
+			"description": [
+				{
+					"ko": "슈트에도 캐주얼에도 어울리는 단정한 핏으로, 발목을 편안하게 잡아주는 밴드와 오래가는 마감으로 비즈니스 룩을 완성합니다.",
+					"en": "A clean fit that works with a suit or casual wear, with a comfortable ankle band and long-lasting finish to complete your business look."
+				},
+				{
+					"ko": "땀과 냄새를 줄여주는 항균·소취 가공으로, 오래 신어도 산뜻함을 유지합니다.",
+					"en": "Antibacterial, odor-reducing treatment keeps them fresh even after long wear."
+				}
+			],
+			"hero": "/images/men_hero.png",
+			"heroMobile": "/images/men_item.png",
+			"items": [
+				{
+					"name": { "ko": "데일리신사중목양말", "en": "Daily Gentleman Mid-Calf Socks" },
+					"slug": "daily-gentleman",
+					"images": [
+						"/images/men_item.png",
+						"/images/men_item_real.png",
+						"/images/men_item_black_ps.jpg",
+						"/images/men_item_gray_ps.jpg",
+						"/images/men_item_mousegray_ps.jpg",
+						"/images/men_flat_fold.jpg",
+						"/images/men_flat_fold_ps.jpg",
+						"/images/men_flat_straight_ps.jpg"
+					],
+					"price": 3500,
+					"salePrice": 2900,
+					"discountRate": 17,
+					"shippingFee": 3000,
+					"smartStoreUrl": "",
+					"detailImages": [
+						"/images/men_description_01.png",
+						"/images/men_description_02.png"
+					]
+				}
+			]
+		},
+		{
+			"name": { "ko": "여성양말", "en": "Women's Socks" },
+			"slug": "women",
+			"tagline": { "ko": "코디의 마침표", "en": "The Finishing Touch" },
+			"description": [
+				{
+					"ko": "다양한 컬러와 패턴으로 코디의 포인트를 더하는 패션 라인으로, 부드러운 촉감과 산뜻한 착용감으로 하루 종일 가볍습니다.",
+					"en": "A fashion line that adds a point of interest to any outfit with a range of colors and patterns — soft to the touch and light all day."
+				},
+				{
+					"ko": "얇고 부드러운 원사로 신발 안에서도 답답함 없이, 발이 편안한 여성 양말입니다.",
+					"en": "Thin, soft yarn keeps feet comfortable and unconfined, even inside your shoes."
+				}
+			],
+			"hero": "/images/women_hero.png",
+			"heroMobile": "/images/women_lineup.png",
+			"items": [
+				{
+					"name": { "ko": "패턴 패션 삭스", "en": "Pattern Fashion Socks" },
+					"slug": "pattern-fashion",
+					"images": [
+						"/images/women_item.png",
+						"/images/women_description_01.png",
+						"/images/women_description_02.png"
+					],
+					"price": null,
+					"salePrice": null,
+					"smartStoreUrl": "https://smartstore.naver.com/yangmal_socks",
+					"detailImages": [
+						"/images/women_description_01.png",
+						"/images/women_description_02.png"
+					]
+				}
+			]
+		}
+	]
+}

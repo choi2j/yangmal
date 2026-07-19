@@ -1,16 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { categories } from '$lib/categories';
 	import { useI18n } from '$lib/i18n/context.svelte';
-
-	import hikingHero from '$lib/assets/hiking/hiking_hero.png';
-	import studentHero from '$lib/assets/student/student_hero.png';
-	import menHero from '$lib/assets/men/men_hero.png';
-	import womenHero from '$lib/assets/women/women_hero.png';
-
-	import hikingLineup from '$lib/assets/hiking/hiking_lineup.png';
-	import studentLineup from '$lib/assets/student/student_lineup.png';
-	import menItem from '$lib/assets/men/men_item.png';
-	import womenLineup from '$lib/assets/women/women_lineup.png';
 
 	const i18n = useI18n();
 
@@ -22,13 +13,12 @@
 		mobileImage: string;
 	};
 
-	// 이미지·슬러그는 고정, 문구는 언어에 따라 사전에서 가져온다.
-	const slideMeta = [
-		{ slug: 'hiking', image: hikingHero, mobileImage: hikingLineup },
-		{ slug: 'student', image: studentHero, mobileImage: studentLineup },
-		{ slug: 'men', image: menHero, mobileImage: menItem },
-		{ slug: 'women', image: womenHero, mobileImage: womenLineup }
-	];
+	// 이미지·슬러그는 카테고리 데이터에서, 문구는 언어에 따라 사전에서 가져온다.
+	const slideMeta = categories.map((c) => ({
+		slug: c.slug,
+		image: c.hero,
+		mobileImage: c.heroMobile
+	}));
 
 	const n = slideMeta.length;
 	const dotIndexes = [...slideMeta.keys()];
@@ -46,12 +36,7 @@
 	// 무한 순환을 위해 앞뒤에 클론 배치: [마지막, ...원본, 첫번째]
 	const display: Slide[] = $derived([slides[n - 1], ...slides, slides[0]]);
 
-	const lineupMeta = [
-		{ slug: 'hiking', image: hikingLineup },
-		{ slug: 'student', image: studentLineup },
-		{ slug: 'men', image: menItem },
-		{ slug: 'women', image: womenLineup }
-	];
+	const lineupMeta = categories.map((c) => ({ slug: c.slug, image: c.heroMobile }));
 
 	const lineup = $derived(
 		lineupMeta.map((meta, i) => ({
