@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
-	import { formatPriceKRW } from '$lib/categories';
+	import { formatPrice } from '$lib/categories';
+	import { useI18n } from '$lib/i18n/context.svelte';
 	import type { PageProps } from './$types';
+
+	const i18n = useI18n();
 
 	let { data }: PageProps = $props();
 	const category = $derived(data.category);
@@ -10,9 +13,9 @@
 
 	let activeImage = $state(0);
 	const tabs = [
-		{ id: 'detail', label: '상세정보' },
-		{ id: 'review', label: '후기' },
-		{ id: 'qna', label: 'Q&A' }
+		{ id: 'detail', label: () => i18n.t.product.tabDetail },
+		{ id: 'review', label: () => i18n.t.product.tabReview },
+		{ id: 'qna', label: () => i18n.t.product.tabQna }
 	] as const;
 
 	let activeTab = $state<(typeof tabs)[number]['id']>('detail');
@@ -68,30 +71,32 @@
 </script>
 
 <svelte:head>
-	<title>{item.name} | {category.name} | yangmal.kr</title>
+	<title>{i18n.pick(item.name)} | {i18n.pick(category.name)} | yangmal.kr</title>
 </svelte:head>
 
 <nav class="crumb" aria-label="breadcrumb">
 	<div class="crumb-inner">
-		<a href={resolve('/')}>HOME</a>
+		<a href={resolve('/')}>{i18n.t.product.home}</a>
 		<span class="crumb-sep" aria-hidden="true">/</span>
-		<a href={resolve('/product/[category]', { category: category.slug })}>{category.name}</a>
+		<a href={resolve('/product/[category]', { category: category.slug })}
+			>{i18n.pick(category.name)}</a
+		>
 		<span class="crumb-sep" aria-hidden="true">/</span>
-		<span class="crumb-current">{item.name}</span>
+		<span class="crumb-current">{i18n.pick(item.name)}</span>
 	</div>
 </nav>
 
 <section class="top">
 	<div class="top-inner">
 		<div class="gallery">
-			<ul class="thumbs" aria-label="상품 이미지 썸네일">
+			<ul class="thumbs" aria-label={i18n.t.product.thumbsLabel}>
 				{#each item.images as image, i (i)}
 					<li>
 						<button
 							type="button"
 							class="thumb"
 							class:active={i === activeImage}
-							aria-label={`${i + 1}번째 이미지 보기`}
+							aria-label={i18n.t.product.imageAlt(i + 1)}
 							onclick={() => (activeImage = i)}
 						>
 							<img src={image} alt="" class:cover={i < 2} />
@@ -101,30 +106,34 @@
 			</ul>
 
 			<div class="main-image">
-				<img src={item.images[activeImage]} alt={item.name} class:cover={activeImage < 2} />
+				<img
+					src={item.images[activeImage]}
+					alt={i18n.pick(item.name)}
+					class:cover={activeImage < 2}
+				/>
 			</div>
 		</div>
 
 		<aside class="info">
 			<p class="info-cat">
 				<a href={resolve('/product/[category]', { category: category.slug })}>
-					{category.slug.toUpperCase()} / {category.name}
+					{category.slug.toUpperCase()} / {i18n.pick(category.name)}
 				</a>
 			</p>
 
-			<h1 class="info-title">{item.name}</h1>
-			<p class="info-tagline">{category.tagline}</p>
+			<h1 class="info-title">{i18n.pick(item.name)}</h1>
+			<p class="info-tagline">{i18n.pick(category.tagline)}</p>
 
 			<dl class="prices">
 				{#if hasPrice}
 					<div class="price-row">
-						<dt>판매가</dt>
-						<dd class="strike">{formatPriceKRW(item.price as number)}</dd>
+						<dt>{i18n.t.product.listPrice}</dt>
+						<dd class="strike">{formatPrice(item.price as number, i18n.lang)}</dd>
 					</div>
 					<div class="price-row sale">
-						<dt>할인판매가</dt>
+						<dt>{i18n.t.product.salePrice}</dt>
 						<dd class="accent">
-							<span class="amount">{formatPriceKRW(item.salePrice as number)}</span>
+							<span class="amount">{formatPrice(item.salePrice as number, i18n.lang)}</span>
 							{#if discountPct > 0}
 								<span class="badge">−{discountPct}%</span>
 							{/if}
@@ -132,15 +141,15 @@
 					</div>
 				{:else}
 					<div class="price-row">
-						<dt>판매가</dt>
-						<dd>미정</dd>
+						<dt>{i18n.t.product.listPrice}</dt>
+						<dd>{i18n.t.product.tbd}</dd>
 					</div>
 				{/if}
 
 				{#if item.shippingFee != null}
 					<div class="price-row">
-						<dt>배송비</dt>
-						<dd>{formatPriceKRW(item.shippingFee)}</dd>
+						<dt>{i18n.t.product.shipping}</dt>
+						<dd>{formatPrice(item.shippingFee, i18n.lang)}</dd>
 					</div>
 				{/if}
 			</dl>
@@ -150,23 +159,23 @@
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 				<a class="buy-btn" href={item.smartStoreUrl} target="_blank" rel="noopener noreferrer">
 					<span class="buy-mark" aria-hidden="true">N</span>
-					<span class="buy-label">네이버 스마트스토어에서 구매하기</span>
+					<span class="buy-label">{i18n.t.product.buy}</span>
 					<span class="buy-arrow" aria-hidden="true">→</span>
 				</a>
 
-				<p class="buy-note">결제 및 배송은 네이버 스마트스토어를 통해 안전하게 진행됩니다.</p>
+				<p class="buy-note">{i18n.t.product.buyNote}</p>
 			{:else}
 				<button class="buy-btn" type="button" disabled>
-					<span class="buy-label">판매 예정 상품</span>
+					<span class="buy-label">{i18n.t.product.comingSoon}</span>
 				</button>
 
-				<p class="buy-note">현재 판매 준비 중인 상품입니다. 곧 만나보실 수 있습니다.</p>
+				<p class="buy-note">{i18n.t.product.comingSoonNote}</p>
 			{/if}
 		</aside>
 	</div>
 </section>
 
-<nav class="tab-nav" aria-label="상품 정보 섹션" style="top: {headerHeight}px;">
+<nav class="tab-nav" aria-label={i18n.t.product.tabNavLabel} style="top: {headerHeight}px;">
 	<div class="tab-nav-inner">
 		{#each tabs as tab (tab.id)}
 			<button
@@ -175,7 +184,7 @@
 				class:active={activeTab === tab.id}
 				onclick={() => handleTabClick(tab.id)}
 			>
-				{tab.label}
+				{tab.label()}
 			</button>
 		{/each}
 	</div>
@@ -185,17 +194,21 @@
 	<div class="section-inner">
 		<header class="section-header">
 			<p class="eyebrow">DETAIL</p>
-			<h2>상세정보</h2>
+			<h2>{i18n.t.product.tabDetail}</h2>
 		</header>
 		{#if item.detailImages.length > 0}
 			<div class="detail-images">
 				{#each item.detailImages as image, i (i)}
-					<img src={image} alt={`${item.name} 상세 이미지 ${i + 1}`} loading="lazy" />
+					<img
+						src={image}
+						alt={i18n.t.product.detailAlt(i18n.pick(item.name), i + 1)}
+						loading="lazy"
+					/>
 				{/each}
 			</div>
 		{:else}
 			<div class="section-empty">
-				<p>상세 이미지와 설명이 곧 추가됩니다.</p>
+				<p>{i18n.t.product.detailEmpty}</p>
 			</div>
 		{/if}
 	</div>
@@ -205,10 +218,10 @@
 	<div class="section-inner">
 		<header class="section-header">
 			<p class="eyebrow">REVIEW</p>
-			<h2>후기</h2>
+			<h2>{i18n.t.product.tabReview}</h2>
 		</header>
 		<div class="section-empty">
-			<p>등록된 후기가 없습니다.</p>
+			<p>{i18n.t.product.reviewEmpty}</p>
 		</div>
 	</div>
 </section>
@@ -217,10 +230,10 @@
 	<div class="section-inner">
 		<header class="section-header">
 			<p class="eyebrow">Q &amp; A</p>
-			<h2>Q&amp;A</h2>
+			<h2>{i18n.t.product.tabQna}</h2>
 		</header>
 		<div class="section-empty">
-			<p>등록된 문의가 없습니다.</p>
+			<p>{i18n.t.product.qnaEmpty}</p>
 		</div>
 	</div>
 </section>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { useI18n } from '$lib/i18n/context.svelte';
 
 	import hikingHero from '$lib/assets/hiking/hiking_hero.png';
 	import studentHero from '$lib/assets/student/student_hero.png';
@@ -11,6 +12,8 @@
 	import menItem from '$lib/assets/men/men_item.png';
 	import womenLineup from '$lib/assets/women/women_lineup.png';
 
+	const i18n = useI18n();
+
 	type Slide = {
 		title: string;
 		description: string;
@@ -19,79 +22,45 @@
 		mobileImage: string;
 	};
 
-	const slides: Slide[] = [
-		{
-			title: '발끝까지 기능을 신다',
-			description: '오래 걸어도 편안한 쿠셔닝과 통기성의 등산 양말',
-			slug: 'hiking',
-			image: hikingHero,
-			mobileImage: hikingLineup
-		},
-		{
-			title: '매일이 편한 데일리 삭스',
-			description: '질리지 않는 베이직, 학생을 위한 가성비 라인',
-			slug: 'student',
-			image: studentHero,
-			mobileImage: studentLineup
-		},
-		{
-			title: '단정함은 디테일에서',
-			description: '깔끔한 핏과 뛰어난 내구성의 남성 비즈니스 양말',
-			slug: 'men',
-			image: menHero,
-			mobileImage: menItem
-		},
-		{
-			title: '코디의 마침표',
-			description: '다양한 컬러와 패턴으로 완성하는 여성 패션 양말',
-			slug: 'women',
-			image: womenHero,
-			mobileImage: womenLineup
-		}
+	// 이미지·슬러그는 고정, 문구는 언어에 따라 사전에서 가져온다.
+	const slideMeta = [
+		{ slug: 'hiking', image: hikingHero, mobileImage: hikingLineup },
+		{ slug: 'student', image: studentHero, mobileImage: studentLineup },
+		{ slug: 'men', image: menHero, mobileImage: menItem },
+		{ slug: 'women', image: womenHero, mobileImage: womenLineup }
 	];
 
-	const n = slides.length;
+	const n = slideMeta.length;
+	const dotIndexes = [...slideMeta.keys()];
+
+	const slides: Slide[] = $derived(
+		slideMeta.map((meta, i) => ({
+			slug: meta.slug,
+			image: meta.image,
+			mobileImage: meta.mobileImage,
+			title: i18n.t.home.slides[i].title,
+			description: i18n.t.home.slides[i].desc
+		}))
+	);
+
 	// 무한 순환을 위해 앞뒤에 클론 배치: [마지막, ...원본, 첫번째]
-	const display: Slide[] = [slides[n - 1], ...slides, slides[0]];
-	const dotIndexes = [...slides.keys()];
+	const display: Slide[] = $derived([slides[n - 1], ...slides, slides[0]]);
 
-	type Lineup = {
-		name: string;
-		slug: string;
-		description: string;
-		image: string;
-	};
-
-	const lineup: Lineup[] = [
-		{
-			name: '등산양말',
-			slug: 'hiking',
-			description:
-				'험한 산길에서도 발을 보호하는 두툼한 쿠셔닝과 땀을 빠르게 배출하는 통기성 설계. 장시간 산행에도 물집 걱정 없이 편안합니다.',
-			image: hikingLineup
-		},
-		{
-			name: '학생양말',
-			slug: 'student',
-			description:
-				'매일 신어도 부담 없는 가성비 베이직 라인. 질리지 않는 컬러와 튼튼한 내구성으로 활동량 많은 학생에게 딱 맞습니다.',
-			image: studentLineup
-		},
-		{
-			name: '남성양말',
-			slug: 'men',
-			description:
-				'슈트에도 캐주얼에도 어울리는 단정한 핏. 발목을 편안하게 잡아주는 밴드와 오래가는 마감으로 비즈니스 룩을 완성합니다.',
-			image: menItem
-		},
-		{
-			name: '여성양말',
-			slug: 'women',
-			description:
-				'다양한 컬러와 패턴으로 코디의 포인트를 더하는 패션 라인. 부드러운 촉감과 산뜻한 착용감으로 하루 종일 가볍습니다.',
-			image: womenLineup
-		}
+	const lineupMeta = [
+		{ slug: 'hiking', image: hikingLineup },
+		{ slug: 'student', image: studentLineup },
+		{ slug: 'men', image: menItem },
+		{ slug: 'women', image: womenLineup }
 	];
+
+	const lineup = $derived(
+		lineupMeta.map((meta, i) => ({
+			slug: meta.slug,
+			image: meta.image,
+			name: i18n.t.home.lineup[i].name,
+			description: i18n.t.home.lineup[i].desc
+		}))
+	);
 
 	let index = $state(1); // 첫 원본 슬라이드에서 시작
 	let animate = $state(true);
@@ -159,7 +128,7 @@
 </script>
 
 <svelte:head>
-	<title>yangmal.kr — NINESOCKS 기능성 양말 쇼핑몰</title>
+	<title>{i18n.t.home.title}</title>
 </svelte:head>
 
 <section class="hero" use:autoplay>
@@ -180,11 +149,8 @@
 					<div class="hero-text">
 						<h2 class="hero-title">{slide.title}</h2>
 						<p class="hero-desc">{slide.description}</p>
-						<a
-							class="hero-cta"
-							href={resolve('/product/[category]', { category: slide.slug })}
-						>
-							제품 보러가기
+						<a class="hero-cta" href={resolve('/product/[category]', { category: slide.slug })}>
+							{i18n.t.common.shopNow}
 						</a>
 					</div>
 				</article>
@@ -196,7 +162,7 @@
 		<button
 			class="hero-btn hero-btn-prev"
 			type="button"
-			aria-label="이전 슬라이드"
+			aria-label={i18n.t.common.prevSlide}
 			onclick={onPrev}>&#10094;</button
 		>
 
@@ -209,34 +175,32 @@
 		<button
 			class="hero-btn hero-btn-next"
 			type="button"
-			aria-label="다음 슬라이드"
+			aria-label={i18n.t.common.nextSlide}
 			onclick={onNext}>&#10095;</button
 		>
 	</div>
 </section>
 
 <section class="intro">
-	<p class="intro-text">
-		yangmal.kr은 <strong>NINESOCKS</strong>가 만든 기능성 양말을 판매하는 온라인 쇼핑몰입니다.<br />
-		일상부터 활동까지, 발이 닿는 모든 순간을 더 편안하게 만들어 드립니다.
-	</p>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	<p class="intro-text">{@html i18n.t.home.introHtml}</p>
 	<a class="intro-btn" href={resolve('/about')}>
 		<span>ABOUT</span>
 		<span class="intro-btn-sep" aria-hidden="true"></span>
-		<span>더 알아보기</span>
+		<span>{i18n.t.home.learnMore}</span>
 	</a>
 </section>
 
 <section class="lineup-head">
 	<span class="lineup-eyebrow">LINEUP</span>
-	<h2 class="lineup-title">제품 라인업</h2>
+	<h2 class="lineup-title">{i18n.t.home.lineupTitle}</h2>
 	<p class="lineup-subtitle">
-		등산부터 데일리까지, 상황과 취향에 맞춰 고른 네 가지 양말 라인을 만나보세요.
+		{i18n.t.home.lineupSubtitle}
 	</p>
 </section>
 
 <section class="lineup">
-	{#each lineup as item, i (item.name)}
+	{#each lineup as item, i (item.slug)}
 		{#if i > 0}
 			<hr class="lineup-divider" />
 		{/if}
@@ -246,7 +210,7 @@
 				<h3 class="lineup-name">{item.name}</h3>
 				<p class="lineup-desc">{item.description}</p>
 				<a class="lineup-link" href={resolve('/product/[category]', { category: item.slug })}>
-					제품 보러가기
+					{i18n.t.common.shopNow}
 				</a>
 			</div>
 		</article>
@@ -256,13 +220,10 @@
 <section class="store-cta">
 	<div class="store-cta-inner">
 		<p class="store-eyebrow">NAVER SMARTSTORE</p>
-		<h2 class="store-title">
-			네이버 스마트스토어에서<br />
-			NINESOCKS를 만나보세요.
-		</h2>
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<h2 class="store-title">{@html i18n.t.home.storeTitleHtml}</h2>
 		<p class="store-text">
-			모든 상품의 구매, 결제, 배송은 네이버 스마트스토어를 통해 안전하고 빠르게 진행됩니다.
-			후기와 Q&amp;A도 스토어에서 확인하실 수 있습니다.
+			{i18n.t.home.storeText}
 		</p>
 		<!-- 외부 스마트스토어 링크라 resolve() 대상이 아님 -->
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
@@ -273,7 +234,7 @@
 			rel="noopener noreferrer"
 		>
 			<span class="store-mark" aria-hidden="true">N</span>
-			<span>네이버 스마트스토어 바로가기</span>
+			<span>{i18n.t.home.storeBtn}</span>
 			<span class="store-arrow" aria-hidden="true">→</span>
 		</a>
 	</div>
@@ -447,7 +408,7 @@
 		color: #333;
 	}
 
-	.intro-text strong {
+	.intro-text :global(strong) {
 		font-weight: 700;
 	}
 

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { useI18n } from '$lib/i18n/context.svelte';
+
+	const i18n = useI18n();
 
 	const year = new Date().getFullYear();
 
@@ -21,7 +24,7 @@
 					<span class="logo-name">yangmal</span><span class="logo-tld">.kr</span>
 				</a>
 
-				<nav class="footer-nav" aria-label="푸터 메뉴">
+				<nav class="footer-nav" aria-label={i18n.t.footer.menuAlt}>
 					<ul>
 						{#each navLinks as link (link.href)}
 							<li><a href={link.href}>{link.label}</a></li>
@@ -32,15 +35,23 @@
 
 			<div class="footer-grid">
 				<section class="footer-col">
-					<p class="footer-col-label">COMPANY</p>
-					<p class="footer-company">나인양말 NINESOCKS</p>
-					<p class="footer-muted">경기도 포천시 소흘읍 한성길 106</p>
+					<p class="footer-col-label">{i18n.t.footer.labelCompany}</p>
+					<p class="footer-company">{i18n.t.footer.company}</p>
+					<p class="footer-muted">{i18n.t.footer.address}</p>
 				</section>
 
 				<section class="footer-col">
-					<p class="footer-col-label">INQUIRY</p>
-					<p>사업 문의 &nbsp;<a href="mailto:ninesocks@naver.com">ninesocks@naver.com</a></p>
-					<p>사이트 관리자 &nbsp;<a href="mailto:choi2j20@gmail.com">choi2j20@gmail.com</a></p>
+					<p class="footer-col-label">{i18n.t.footer.labelInquiry}</p>
+					<p>
+						{i18n.t.footer.inquiryBusiness} &nbsp;<a href="mailto:ninesocks@naver.com"
+							>ninesocks@naver.com</a
+						>
+					</p>
+					<p>
+						{i18n.t.footer.inquiryAdmin} &nbsp;<a href="mailto:choi2j20@gmail.com"
+							>choi2j20@gmail.com</a
+						>
+					</p>
 				</section>
 			</div>
 

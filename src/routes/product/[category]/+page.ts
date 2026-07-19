@@ -6,7 +6,7 @@ export const load: PageLoad = ({ params }) => {
 	const category = getCategory(params.category);
 
 	if (!category) {
-		error(404, '존재하지 않는 카테고리입니다.');
+		error(404, 'Category not found');
 	}
 
 	return { category };

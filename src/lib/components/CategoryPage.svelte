@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { Category } from '$lib/categories';
+	import { useI18n } from '$lib/i18n/context.svelte';
+
+	const i18n = useI18n();
 
 	let { category }: { category: Category } = $props();
 </script>
 
 <section class="hero">
-	<div class="hero-inner" style="--hero-bg: url({category.hero}); --hero-bg-mobile: url({category.heroMobile});">
+	<div
+		class="hero-inner"
+		style="--hero-bg: url({category.hero}); --hero-bg-mobile: url({category.heroMobile});"
+	>
 		<div class="hero-bg" aria-hidden="true"></div>
 		<div class="hero-overlay" aria-hidden="true"></div>
 
@@ -17,9 +23,9 @@
 				<span class="hero-tag-soft">{category.slug.toUpperCase()}</span>
 			</div>
 
-			<h1 class="hero-title">{category.name}</h1>
-			<p class="hero-tagline">{category.tagline}</p>
-			<p class="hero-desc">{category.description[0]}</p>
+			<h1 class="hero-title">{i18n.pick(category.name)}</h1>
+			<p class="hero-tagline">{i18n.pick(category.tagline)}</p>
+			<p class="hero-desc">{i18n.pick(category.description[0])}</p>
 		</div>
 	</div>
 </section>
@@ -28,11 +34,11 @@
 	<header class="catalog-header">
 		<div class="catalog-title">
 			<p class="eyebrow">LINEUP</p>
-			<h2>{category.name} 라인업</h2>
+			<h2>{i18n.pick(category.name)} {i18n.t.category.lineupWord}</h2>
 		</div>
 		<p class="catalog-count">
 			<span class="count-num">{String(category.items.length).padStart(2, '0')}</span>
-			<span class="count-label">items</span>
+			<span class="count-label">{i18n.t.category.items}</span>
 		</p>
 	</header>
 
@@ -47,7 +53,7 @@
 					})}
 				>
 					<div class="card-image">
-						<img src={item.images[0]} alt={item.name} loading="lazy" />
+						<img src={item.images[0]} alt={i18n.pick(item.name)} loading="lazy" />
 						<span class="card-index" aria-hidden="true">
 							{String(i + 1).padStart(2, '0')}
 						</span>
@@ -55,7 +61,7 @@
 					<div class="card-body">
 						<div class="card-text">
 							<p class="card-cat">{category.slug.toUpperCase()}</p>
-							<h3 class="card-name">{item.name}</h3>
+							<h3 class="card-name">{i18n.pick(item.name)}</h3>
 						</div>
 						<span class="card-cta">
 							<span>VIEW</span>

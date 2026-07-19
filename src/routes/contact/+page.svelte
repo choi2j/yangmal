@@ -1,6 +1,11 @@
 <script lang="ts">
-	const address = '경기도 포천시 소흘읍 한성길 106';
-	const mapUrl = `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
+	import { useI18n } from '$lib/i18n/context.svelte';
+
+	const i18n = useI18n();
+
+	// 네이버 지도 검색은 한국어 주소로 해야 정확히 매칭되므로 쿼리는 항상 한국어 주소를 사용한다.
+	const mapAddress = '경기도 포천시 소흘읍 한성길 106';
+	const mapUrl = `https://map.naver.com/p/search/${encodeURIComponent(mapAddress)}`;
 </script>
 
 <svelte:head>
@@ -11,11 +16,12 @@
 	<div class="hero-inner">
 		<p class="eyebrow">CONTACT</p>
 		<h1>
-			<span class="line">언제든</span>
-			<span class="line">연락주세요.</span>
+			{#each i18n.t.contact.heroTitle as line (line)}
+				<span class="line">{line}</span>
+			{/each}
 		</h1>
 		<p class="lead">
-			제품 문의, OEM 주문, 협업 제안 등 무엇이든 편하게 연락 주세요.
+			{i18n.t.contact.lead}
 		</p>
 	</div>
 </section>
@@ -24,24 +30,24 @@
 	<div class="info-inner">
 		<dl class="info-list">
 			<div class="row">
-				<dt>회사명</dt>
-				<dd>나인양말</dd>
+				<dt>{i18n.t.contact.labelCompany}</dt>
+				<dd>{i18n.t.contact.company}</dd>
 			</div>
 			<div class="row">
-				<dt>대표자</dt>
-				<dd>최준규</dd>
+				<dt>{i18n.t.contact.labelCeo}</dt>
+				<dd>{i18n.t.contact.ceo}</dd>
 			</div>
 			<div class="row">
-				<dt>주소</dt>
+				<dt>{i18n.t.contact.labelAddress}</dt>
 				<dd>
-					<span>{address}</span>
+					<span>{i18n.t.contact.address}</span>
 					<a class="map-link" href={mapUrl} target="_blank" rel="noopener noreferrer">
-						지도에서 보기 →
+						{i18n.t.contact.mapLink}
 					</a>
 				</dd>
 			</div>
 			<div class="row">
-				<dt>전화</dt>
+				<dt>{i18n.t.contact.labelPhone}</dt>
 				<dd>
 					<a href="tel:031-543-4193">031-543-4193</a>
 					<span class="sep">/</span>
@@ -49,11 +55,11 @@
 				</dd>
 			</div>
 			<div class="row">
-				<dt>팩스</dt>
+				<dt>{i18n.t.contact.labelFax}</dt>
 				<dd>031-543-4249</dd>
 			</div>
 			<div class="row">
-				<dt>이메일</dt>
+				<dt>{i18n.t.contact.labelEmail}</dt>
 				<dd>
 					<a href="mailto:ninesocks@naver.com">ninesocks@naver.com</a>
 				</dd>

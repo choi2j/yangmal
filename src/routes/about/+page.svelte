@@ -1,5 +1,8 @@
-<script lang="ts">
+﻿<script lang="ts">
 	import { resolve } from '$app/paths';
+	import { useI18n } from '$lib/i18n/context.svelte';
+
+	const i18n = useI18n();
 </script>
 
 <svelte:head>
@@ -10,14 +13,12 @@
 	<div class="hero-inner">
 		<p class="eyebrow">ABOUT NINESOCKS</p>
 		<h1>
-			<span class="line">기능성 양말의</span>
-			<span class="line">미래를 만듭니다.</span>
+			{#each i18n.t.about.heroTitle as line (line)}
+				<span class="line">{line}</span>
+			{/each}
 		</h1>
 		<p class="lead">
-			나인양말은 기능성 양말을 중심으로 제품을 개발하며,
-			양말의 미래를 위해 끊임없이 노력하고 있습니다.
-			소비자의 입장에서 최고의 품질을 구현하는 것,
-			그것이 나인양말이 일하는 방식입니다.
+			{i18n.t.about.lead}
 		</p>
 	</div>
 </section>
@@ -26,14 +27,15 @@
 	<div class="story-grid">
 		<div class="story-left">
 			<p class="eyebrow">OUR STORY</p>
-			<h2>20년의 노하우,<br />그리고 기능성.</h2>
+			<h2>
+				{#each i18n.t.about.storyTitle as line, i (line)}
+					{#if i > 0}<br />{/if}{line}
+				{/each}
+			</h2>
 		</div>
 		<div class="story-right">
 			<p>
-				2001년부터 양말 산업에 몸담아 온 노하우를 바탕으로 2019년 나인양말을 창업했습니다.
-				남들이 하지 않던 당뇨양말을 비롯해 한방·황토·머드 양말 등 기능성 제품을
-				BYC, 미국 Dr. Leonard's, 스페인 Vibra confort 등 국내외 주요 브랜드에
-				납품하며 기능성 양말 분야를 선도해 왔습니다.
+				{i18n.t.about.storyText}
 			</p>
 		</div>
 	</div>
@@ -43,36 +45,18 @@
 	<div class="values-inner">
 		<header class="values-header">
 			<p class="eyebrow">OUR PRINCIPLES</p>
-			<h2>우리가 양말을 만드는 방식</h2>
+			<h2>{i18n.t.about.principlesHeading}</h2>
 		</header>
 
 		<ul class="values-grid">
-			<li>
-				<span class="num">01</span>
-				<h3>기능성에 집중합니다</h3>
-				<p>
-					<strong>한방·황토·머드·죽탄</strong> 등 천연 소재와 <strong>나노실버·원적외선</strong>
-					섬유를 활용해, 단순히 신는 양말이 아닌 <strong>발의 건강을 지키는 양말</strong>을
-					만듭니다.
-				</p>
-			</li>
-			<li>
-				<span class="num">02</span>
-				<h3>검증된 기술력으로 만듭니다</h3>
-				<p>
-					항균·소취 효과를 가진 무독성 섬유 조성물 <strong>특허(제10-0887285호)</strong>와
-					<strong>20년간 축적된 노하우</strong>를 바탕으로, 한 켤레의 품질을 일관되게
-					유지합니다.
-				</p>
-			</li>
-			<li>
-				<span class="num">03</span>
-				<h3>세계가 인정한 품질입니다</h3>
-				<p>
-					<strong>미국·캐나다·스페인</strong> 등 글로벌 시장에 기능성 양말을 수출하고,
-					<strong>BYC 최우수 협력업체</strong>로 선정되며 국내외에서 품질을 인정받아 왔습니다.
-				</p>
-			</li>
+			{#each i18n.t.about.principles as principle, i (i)}
+				<li>
+					<span class="num">{String(i + 1).padStart(2, '0')}</span>
+					<h3>{principle.title}</h3>
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+					<p>{@html principle.descHtml}</p>
+				</li>
+			{/each}
 		</ul>
 	</div>
 </section>
@@ -80,10 +64,10 @@
 <section class="contact-cta">
 	<div class="contact-cta-inner">
 		<p class="eyebrow on-dark">GET IN TOUCH</p>
-		<h2>함께 만들어 갈 협업을 기다립니다.</h2>
-		<p class="cta-text">OEM·도매·협업 등 사업 관련 문의는 언제든 환영합니다.</p>
+		<h2>{i18n.t.about.ctaTitle}</h2>
+		<p class="cta-text">{i18n.t.about.ctaText}</p>
 		<a class="cta-btn" href={resolve('/contact')}>
-			<span>사업 문의하기</span>
+			<span>{i18n.t.about.ctaBtn}</span>
 			<span class="arrow" aria-hidden="true">→</span>
 		</a>
 	</div>
@@ -202,7 +186,7 @@
 		color: #555;
 	}
 
-	.values-grid strong {
+	.values-grid :global(strong) {
 		font-weight: 700;
 		color: #1a1a1a;
 	}
