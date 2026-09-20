@@ -48,7 +48,7 @@ export function Media({
           fetchPriority={priority ? 'high' : 'auto'}
           style={{
             ...(naturalDetail ? { display: 'block', width: '100%', height: 'auto' } : {}),
-            objectFit: naturalDetail ? 'contain' : asset.fit,
+            objectFit: naturalDetail ? 'contain' : slot === 'product' ? 'cover' : asset.fit,
             objectPosition: asset.focalPoint
               ? `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%`
               : '50% 50%',
