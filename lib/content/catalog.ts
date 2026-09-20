@@ -27,7 +27,8 @@ export function discountPercent(product: Product): number {
     product.salePrice >= product.price
   )
     return 0;
-  return Math.round((1 - product.salePrice / product.price) * 100);
+  // Truncate fractional discounts so the displayed percentage is not overstated.
+  return Math.floor(((product.price - product.salePrice) * 100) / product.price);
 }
 
 export function canPurchase(product: Product): boolean {

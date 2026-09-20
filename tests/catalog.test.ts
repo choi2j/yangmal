@@ -50,7 +50,7 @@ test('unknown prices sort last in both directions and sorting does not mutate in
   for (const order of ['price-low', 'price-high'] as const) {
     const result = filterProducts(seedContent.products, 'all', '', order);
     assert.equal(sellingPrice(result.at(-1)!), null);
-    assert.equal(sellingPrice(result[0]), order === 'price-low' ? 2900 : 4900);
+    assert.equal(sellingPrice(result[0]), order === 'price-low' ? 2500 : 4900);
   }
   assert.deepEqual(
     seedContent.products.map((product) => product.id),
@@ -64,6 +64,14 @@ test('normal-price products and free products retain their prices without invali
   assert.equal(discountPercent(product), 0);
   assert.equal(discountPercent({ ...product, price: 0, salePrice: 0 }), 0);
   assert.equal(sellingPrice({ ...product, salePrice: 0 }), 0);
+});
+
+test('discounts truncate fractional percentages and keep exact percentages', () => {
+  const product = { ...seedContent.products[0], price: 3500, salePrice: 2500 };
+  assert.equal(sellingPrice(product), 2500);
+  assert.equal(discountPercent(product), 28);
+  assert.equal(discountPercent({ ...product, price: 10000, salePrice: 5800 }), 42);
+  assert.equal(discountPercent({ ...product, salePrice: 0 }), 100);
 });
 
 test('purchasing depends on product status and a valid URL, never its category', () => {
