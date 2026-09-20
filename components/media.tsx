@@ -8,7 +8,7 @@ export const mediaDimensions: Record<
   { width: number; height: number }
 > = {
   hero: { width: 1440, height: 1200 },
-  product: { width: 800, height: 1000 },
+  product: { width: 800, height: 800 },
   gallery: { width: 1200, height: 1200 },
   category: { width: 800, height: 600 },
   story: { width: 1000, height: 1200 },

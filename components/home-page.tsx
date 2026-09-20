@@ -19,6 +19,16 @@ export function HomePage({ content }: { content: SiteContent }) {
   const featured = content.products
     .filter((product) => product.featured)
     .slice(0, 4);
+  const productCovers = content.products
+    .map((product) => product.images[0])
+    .filter((image) => image?.src);
+  // Reuse product covers until dedicated homepage images are set in the CMS.
+  const heroImage = content.home.hero.src
+    ? content.home.hero
+    : productCovers[1] ?? productCovers[0] ?? content.home.hero;
+  const storyImage = content.home.story.src
+    ? content.home.story
+    : productCovers[0] ?? content.home.story;
   const values = [
     {
       icon: Footprints,
@@ -65,7 +75,7 @@ export function HomePage({ content }: { content: SiteContent }) {
           <p className="hero-footnote">FUNCTIONAL SOCKS, SINCE 2019</p>
         </div>
         <div className="hero-visual">
-          <Media asset={content.home.hero} slot="hero" priority />
+          <Media asset={heroImage} slot="hero" priority />
           <div className="hero-image-caption">
             <div>
               <span>THE EVERYDAY EDIT</span>
@@ -127,7 +137,12 @@ export function HomePage({ content }: { content: SiteContent }) {
               key={category.id}
               href={`/product/${category.slug}`}
             >
-              <Media asset={category.image} slot="category" />
+              <Media
+                asset={category.image.src ? category.image : content.products.find(
+                  (product) => product.categoryId === category.id && product.images[0]?.src,
+                )?.images[0] ?? category.image}
+                slot="category"
+              />
               <div className="collection-copy">
                 <span className="collection-number">0{index + 1}</span>
                 <div>
@@ -173,7 +188,7 @@ export function HomePage({ content }: { content: SiteContent }) {
         </section>
       )}
       <section className="container section story-section">
-        <Media asset={content.home.story} slot="story" />
+        <Media asset={storyImage} slot="story" />
         <div className="story-copy">
           <p className="eyebrow">SMALL DETAILS. EVERYDAY DIFFERENCE.</p>
           <h2>
