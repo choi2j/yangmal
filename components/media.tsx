@@ -31,21 +31,24 @@ export function Media({
   const size = mediaDimensions[slot];
   const alt = asset ? pick(asset.alt) : t('상품 이미지', 'Product image');
   const available = asset?.src && failedSrc !== asset.src;
+  const naturalDetail = slot === 'detail' && available;
+  const sourceSize = asset?.width && asset?.height ? { width: asset.width, height: asset.height } : null;
   return (
     <div
-      className={`media media-${slot} tone-${asset?.tone ?? 'sand'} ${available ? '' : 'placeholder'} ${className}`}
-      style={{ aspectRatio: `${size.width} / ${size.height}` }}
+      className={`media media-${slot} tone-${asset?.tone ?? 'sand'} ${available ? '' : 'placeholder'} ${naturalDetail ? 'media-natural-detail' : ''} ${className}`}
+      style={{ aspectRatio: naturalDetail ? sourceSize ? `${sourceSize.width} / ${sourceSize.height}` : 'auto' : `${size.width} / ${size.height}` }}
     >
       {available ? (
         <img
           src={asset.src!}
           alt={alt}
-          width={size.width}
-          height={size.height}
+          width={naturalDetail ? sourceSize?.width : size.width}
+          height={naturalDetail ? sourceSize?.height : size.height}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           style={{
-            objectFit: asset.fit,
+            ...(naturalDetail ? { display: 'block', width: '100%', height: 'auto' } : {}),
+            objectFit: naturalDetail ? 'contain' : asset.fit,
             objectPosition: asset.focalPoint
               ? `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%`
               : '50% 50%',

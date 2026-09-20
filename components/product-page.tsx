@@ -171,7 +171,7 @@ export function ProductPage({
         id="product-details"
         className="container section product-details"
       >
-        <div className="detail-story">
+        <div className={`detail-story ${product.detailImages.some(asset => asset.src) ? 'detail-story-intro' : ''}`}>
           <div>
             <p className="eyebrow">MADE FOR YOUR EVERYDAY</p>
             <h2>{pick(product.summary)}</h2>
@@ -185,9 +185,10 @@ export function ProductPage({
               ))}
             </div>
           </div>
-          <Media asset={product.detailImages[0]} slot="detail" />
+          {!product.detailImages.some(asset => asset.src) && <Media asset={product.detailImages[0]} slot="detail" />}
         </div>
-        {product.detailImages.slice(1).map((asset) => (
+        <div className="product-detail-images">
+        {(product.detailImages.some(asset => asset.src) ? product.detailImages : product.detailImages.slice(1)).map((asset) => (
           <Media
             key={asset.id}
             asset={asset}
@@ -195,6 +196,7 @@ export function ProductPage({
             className="additional-detail"
           />
         ))}
+        </div>
       </section>
       <section id="product-guide" className="guide-section">
         <div className="container guide-grid">

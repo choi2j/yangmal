@@ -1279,6 +1279,35 @@ summary:focus-visible {
   margin: 30px auto 0;
   border-radius: 8px;
 }
+.detail-story.detail-story-intro {
+  display: block;
+  max-width: 880px;
+  margin-inline: auto;
+  margin-bottom: 32px;
+}
+.product-detail-images {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 880px);
+  margin-inline: auto;
+  gap: 0;
+}
+.product-detail-images .additional-detail {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+}
+.media.media-natural-detail {
+  background: #fff;
+  padding: 0;
+}
+.media.media-natural-detail img {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .guide-section {
   background: var(--muted);
   padding-block: 48px;

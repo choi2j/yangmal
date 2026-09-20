@@ -1,34 +1,39 @@
-# 향후 yangmalkr_cms 연결 계약
+# yangmalkr_cms 연결 계약
 
-`yangmalkr`는 공개 웹사이트, `yangmalkr_cms`는 추후 만들 별도 관리 프로젝트입니다. 이 문서는 연결 경계만 정의하며 API 서버나 DB는 구현하지 않습니다.
+공개 웹사이트는 `yangmalkr`, 각 담당자 PC의 관리 프로그램은 형제 프로젝트 `yangmalkr_cms`입니다. CMS는 Supabase Auth 계정으로 로그인하여 DB 공개본과 Storage 이미지를 게시합니다. 방문자 사이트에 쓰기 권한을 전달하지 않습니다.
 
-## 읽기 경계
+## 데이터와 공유 스키마
 
-웹사이트의 모든 페이지는 `ContentRepository.getPublishedContent(): Promise<SiteContent>`를 통해 콘텐츠를 받습니다. 현재 구현은 로컬 seed입니다. CMS를 붙일 때 이 adapter만 원격 fetch로 교체합니다. 콘텐츠 조회용 인증이 필요하면 서버 측 환경 변수로 처리하고, 클라이언트에 쓰기 토큰을 전달하지 않습니다.
+- 타입: `lib/content/types.ts`
+- 런타임 검증 및 공통 변환: `lib/content/schema.ts`
+- 웹사이트 읽기: `lib/content/repository.ts`, `lib/content/supabase.ts`
+- CMS는 위 스키마와 웹사이트 React 컴포넌트를 개발 시 재사용하며, 배포할 때 독립 번들로 묶습니다.
 
-예상 공개 API: `GET /api/public/site-content`, JSON 스키마 버전 1. 실제 API 경로와 인증 방식은 CMS 구현 시 확정합니다. 실행 가능한 API나 작동 중인 연결로 오해하지 않도록 아직 환경 변수 스위치를 제공하지 않습니다.
+`SiteContent.schemaVersion`은 1입니다. 상품·카테고리·미디어는 고정 ID를 사용합니다. 상품의 공개 상태 `draft | published | archived`와 판매 상태 `available | coming-soon | sold-out`를 구분합니다. 가격은 원 단위 정수 또는 null입니다. URL은 HTTPS, 이미지의 로컬 초안 경로는 `/media/<sha256>.webp`입니다. 미디어 초점은 x/y 각각 **0~1**입니다.
 
-## 데이터
+공개 snapshot은 products에서 published만 포함합니다. 초안·보관·로컬 이력은 공개 API에 들어가지 않습니다. 대표 이미지는 images[0]이며 사용자는 CMS에서 이미지를 교체·재정렬합니다. CMS 업로드는 최대 12MB/2,400만 픽셀의 JPG/PNG/WebP를 받아 최대 2000×3000의 WebP로 변환합니다. 표시 비율은 기존 페이지 컴포넌트에서 고정합니다.
 
-정확한 TypeScript 계약은 `lib/content/types.ts`입니다.
+## 읽기와 게시
 
-- `categories`: 고정 ID, URL slug, 한/영 이름·소개, 대표 미디어, 정렬 순서.
-- `products`: 고정 ID, categoryId 참조, URL slug, 한/영 상품명·설명·특징, 가격·할인가·배송비, 구매 URL, 공개 상태, 판매 상태, 추천 여부, 정렬 순서, 이미지 배열.
-- `home`: 한/영 제목·설명, 히어로와 브랜드 이미지. 향후 필요할 때 한정된 페이지 섹션 블록으로 확장.
-- `settings`: 스마트스토어·이메일·전화·주소 등 사이트 공통 정보.
-- `Media`: 고정 ID, nullable URL, 한/영 alt, filler 라벨과 색상, contain/cover, 0~1 범위의 초점 좌표.
+서버 환경 변수 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`를 함께 지정하면 다음 read-only API를 사용합니다.
 
-공개 상태 `draft | published | archived`와 판매 상태 `available | coming-soon | sold-out`를 분리합니다. 대표 이미지는 images[0]이며, 관리 화면에서 재정렬할 수 있도록 각 이미지에도 ID를 둡니다. 카테고리 순서가 바뀌어도 번역과 상품 연결은 ID 기준으로 유지됩니다.
+```text
+GET <SUPABASE_URL>/rest/v1/yangmal_content?id=eq.main&select=content
+apikey: <publishable 또는 레거시 anon 키>
+```
 
-## CMS 구현 시 필요한 규칙
+이미지는 `<SUPABASE_URL>/storage/v1/object/public/yangmal-media/<hash>.webp`에서 읽습니다. 로컬 PC 주소는 공개 콘텐츠에 허용하지 않습니다. 저장소와 DB가 온라인에 있으므로 담당자 PC의 실행 여부에 영향을 받지 않습니다.
 
-1. 서버에서 데이터 스키마, 가격의 유효 범위, slug 중복, 참조 무결성, HTTPS 구매 URL, 미디어 URL과 접근 권한을 검증.
-2. draft 저장과 publish를 분리하고 공개 조회는 published만 반환. 로그인된 미리보기 요청만 초안 접근 가능.
-3. 제거는 archived/게시 취소부터 지원. 영구 삭제 전 사용 중인 배너·상품·미디어 참조 확인. slug 변경 시 이전 URL 리디렉션 관리.
-4. 미디어는 외부 object storage/CDN에 저장. 업로드 형식·용량 검증과 이미지 크기별 변환, 삭제된 파일의 참조 검사 구현.
-5. 게시 시 웹사이트 캐시를 무효화하거나 짧은 유효기간으로 재조회. 초안 미리보기 구독과 공개 방문자 갱신 정책은 분리.
-6. MCP와 관리자 화면은 동일한 서버 규칙을 사용. 변경 이력과 version 충돌 감지, 복구 구현.
+웹사이트는 매 페이지 요청 시 공개본을 조회하고 검증합니다. 환경 변수가 없으면 seed를 사용합니다. 연결된 프로젝트에 아직 공개본이 없으면 빈 상품 목록을 표시합니다. 조회 실패·잘못된 스키마는 오류 처리하며, 오래된 seed 상품으로 바꿔 판매하지 않습니다. 이미 열린 탭은 새로고침해야 최신 내용이 보입니다.
 
-## 현재 지원 범위
+CMS는 이미지부터 업로드하고, `yangmal_publish` RPC로 공개 JSON을 마지막에 교체합니다. RPC는 DB의 편집자 목록을 확인하고 초안의 기준 revision과 현재 공개 revision을 비교합니다. 다른 담당자의 선행 게시가 있으면 409로 거부합니다. 로컬 초안은 공유/자동 병합되지 않습니다. 새 공개본을 불러와 필요한 변경을 적용합니다.
 
-데이터와 화면의 분리, 고정 ID, 다국어 콘텐츠, 공개 상태 필터, 상품별 구매 상태, 실패 시 filler, 재사용 가능한 페이지 컴포넌트까지만 구현되어 있습니다. 인증, 업로드, 데이터 변경, 게시 버튼, 실시간 미리보기는 향후 CMS 작업입니다.
+## 권한
+
+Supabase SQL 설치 파일은 `../yangmalkr_cms/supabase/setup.sql`입니다. 익명·일반 인증 사용자는 공개 컬럼 SELECT만 가능하고, 허용된 담당자만 게시 RPC와 이미지 업로드가 가능합니다. 허용 목록은 사업주가 DB에서 관리합니다. 프로그램은 secret/service_role 키를 받지 않으며 각 계정의 세션을 로컬 서버 메모리에만 보관합니다.
+
+CMS의 API에도 요청 출처·loopback Host·임시 토큰 검사와 스키마 검증이 있습니다. 배포본에는 공개 설정만 포함합니다. 공개 이미지 삭제, 리디렉션 관리, 실시간 공동 편집, 공유 초안, MCP 서버는 현재 구현 범위에 포함하지 않습니다.
+
+실제 상품은 Supabase 공개본과 Storage를 통해 제공합니다. 배포 환경에는 공개 URL과 publishable 키만 설정합니다. 새로운 환경에서는 담당자 계정과 편집 권한을 먼저 설정해야 합니다.
+
+상품 상세 이미지는 배열 순서대로 최대 880px의 공통 너비로 세로 배치하며, 원본 비율을 유지하고 자르지 않습니다. `Media.width`와 `Media.height`는 선택 필드로 레이아웃 공간 예약에 사용합니다. 크기 정보가 없는 기존 이미지도 자연 높이로 표시합니다. 대표 사진과 갤러리의 슬롯 크기는 고정입니다.

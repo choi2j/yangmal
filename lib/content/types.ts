@@ -15,6 +15,8 @@ export type Media = {
   tone: 'sand' | 'sage' | 'stone' | 'rose' | 'ink';
   fit: 'contain' | 'cover';
   focalPoint?: { x: number; y: number };
+  width?: number;
+  height?: number;
 };
 export type Category = {
   id: string;

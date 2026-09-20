@@ -34,7 +34,7 @@ React 19 + TypeScript + Vite/Vinext를 사용합니다. `next/*` import는 Vinex
 
 ## 이미지
 
-요청에 따라 모든 콘텐츠 이미지는 **filler** 상태입니다. 기존 `front2` 이미지 파일을 복사하거나 참조하지 않습니다. 플레이스홀더는 이미지가 없어도 레이아웃이 유지되도록 고정 비율을 예약합니다.
+등록된 상품 이미지는 Supabase Storage에서 읽습니다. 이미지가 없는 콘텐츠와 연결 전 seed 데이터는 고정 비율의 **filler**를 사용합니다. 기존 `front2` 이미지 파일을 복사하거나 참조하지 않습니다.
 
 | 용도             | 기준 크기   | 비율 |
 | ---------------- | ----------- | ---- |
@@ -43,18 +43,18 @@ React 19 + TypeScript + Vite/Vinext를 사용합니다. `next/*` import는 Vinex
 | 상세 갤러리      | 1200 × 1200 | 1:1  |
 | 카테고리 카드    | 800 × 600   | 4:3  |
 | 브랜드 이미지    | 1000 × 1200 | 5:6  |
-| 상품 설명 이미지 | 1200 × 900  | 4:3  |
+| 상품 설명 이미지 | 최대 너비 880px | 원본 비율 유지 |
 
-컴포넌트: `components/media.tsx`. 추후 콘텐츠의 `src`에 이미지 URL을 넣고 `fit`, `focalPoint`, 언어별 `alt`를 지정합니다. 네트워크 오류 시에도 같은 크기의 filler가 표시됩니다. 실제 이미지 서비스 연결 시 크기별 파생 이미지와 `srcset`을 추가해야 합니다. 실이미지가 없으므로 OG/X 이미지도 생성하지 않습니다.
+컴포넌트: `components/media.tsx`. CMS에서 대표 이미지의 `fit`, `focalPoint`, 언어별 `alt`를 지정합니다. 상품 설명 이미지는 순서대로 공통 너비에 세로 배치하며 자르지 않습니다. 선택 필드인 `width`, `height`가 없더라도 자연 높이로 표시합니다. 설명용 filler와 로드 실패 시 대체 화면은 4:3입니다. OG/X 이미지는 별도로 생성하지 않습니다.
 
-## 콘텐츠와 미래 CMS
+## 콘텐츠와 CMS
 
 - 타입: `lib/content/types.ts`
 - 임시 콘텐츠: `lib/content/seed.ts`
 - 공개 데이터 접근: `lib/content/repository.ts`
 - 상품 검색·정렬·가격·구매 가능 여부: `lib/content/catalog.ts`
 
-현재는 로컬 seed 데이터를 읽습니다. 런타임 편집/저장/업로드 기능은 아직 없습니다. 추후 별도 형제 프로젝트 **`yangmalkr_cms`**를 만들고 repository 구현을 공개 콘텐츠 API로 교체할 예정입니다. 이번 작업에서는 CMS 프로젝트나 관리자 기능을 만들지 않았습니다. 계약과 후속 범위는 [CMS_CONTRACT.md](docs/CMS_CONTRACT.md)를 참고하세요.
+별도 형제 프로젝트 **`yangmalkr_cms`**에서 담당자별 Supabase 로그인, 로컬 초안 편집·이미지 업로드·실제 화면 미리보기·공개 게시를 지원합니다. 웹사이트는 서버 환경 변수 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`가 있으면 Supabase 공개본을 매 요청 조회하고 검증합니다. 두 값이 없으면 기존 filler seed를 사용합니다. 공개 사이트에는 비밀 키나 담당자 세션을 사용하지 않습니다. 현재 클라우드 계정은 연결 전입니다. 연결 계약은 [CMS_CONTRACT.md](docs/CMS_CONTRACT.md)를 참고하세요.
 
 ## 디자인
 
