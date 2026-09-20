@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
+  "outputDirectory": null,
+  "env": {
+    "SITE_URL": "https://yangmal.kr",
+    "SUPABASE_URL": "https://favhxgrskjkpplhpsoop.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_tYd1vxdr_XNepiMd3EmOlg_yGRxmHP6"
+  }
+}

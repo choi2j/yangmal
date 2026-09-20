@@ -3,7 +3,7 @@ import type { Media } from './content/types';
 
 // A configured origin, never a request Host or forwarded header.
 export const siteOrigin =
-  process.env.SITE_URL || 'https://yangmalkr.servername.chatgpt.site';
+  process.env.SITE_URL || 'https://yangmal.kr';
 export function pageMetadata(
   title: string,
   description: string,

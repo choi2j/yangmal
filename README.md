@@ -19,7 +19,7 @@ npm test
 npm run build
 ```
 
-React 19 + TypeScript + Vite/Vinext를 사용합니다. `next/*` import는 Vinext의 React App Router 호환 API입니다. Next.js 서버를 실행하는 프로젝트는 아닙니다. 배포 출력은 Cloudflare Worker ESM이며 Sites 어댑터가 포함되어 있습니다.
+React 19 + TypeScript + Next.js App Router를 사용합니다. `choi2j/yangmal` 저장소의 `main`을 기존 Vercel 프로젝트가 배포합니다. `vercel.json`에 Next.js 프레임워크와 빌드 명령을 명시해 이전 Svelte 설정을 대체합니다.
 
 ## 페이지
 
@@ -54,12 +54,14 @@ React 19 + TypeScript + Vite/Vinext를 사용합니다. `next/*` import는 Vinex
 - 공개 데이터 접근: `lib/content/repository.ts`
 - 상품 검색·정렬·가격·구매 가능 여부: `lib/content/catalog.ts`
 
-별도 형제 프로젝트 **`yangmalkr_cms`**에서 담당자별 Supabase 로그인, 로컬 초안 편집·이미지 업로드·실제 화면 미리보기·공개 게시를 지원합니다. 웹사이트는 서버 환경 변수 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`가 있으면 Supabase 공개본을 매 요청 조회하고 검증합니다. 두 값이 없으면 기존 filler seed를 사용합니다. 공개 사이트에는 비밀 키나 담당자 세션을 사용하지 않습니다. 현재 클라우드 계정은 연결 전입니다. 연결 계약은 [CMS_CONTRACT.md](docs/CMS_CONTRACT.md)를 참고하세요.
+별도 형제 프로젝트 **`yangmalkr_cms`**에서 담당자별 Supabase 로그인, 로컬 초안 편집·이미지 업로드·실제 화면 미리보기·공개 게시를 지원합니다. 웹사이트는 서버 환경 변수 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`가 있으면 Supabase 공개본을 매 요청 조회하고 검증합니다. 두 값이 없으면 기존 filler seed를 사용합니다. 공개 사이트에는 비밀 키나 담당자 세션을 사용하지 않습니다. 연결 계약은 [CMS_CONTRACT.md](docs/CMS_CONTRACT.md)를 참고하세요.
+
+Vercel 배포에 필요한 공개 Supabase URL과 publishable 키는 `vercel.json`에 들어 있습니다. 이 키는 공개 읽기 권한만 제공하며, 이미지 업로드와 게시에는 CMS 담당자의 로그인과 DB 편집 권한이 필요합니다. `secret`/`service_role` 키 또는 로그인 정보는 저장소에 넣지 마세요. 로컬 개발은 `.env.example`을 `.env.local`로 복사해 같은 공개 설정을 지정합니다.
 
 ## 디자인
 
 기존의 밝은 바탕과 Pretendard를 이어받고, 메인 테마 컬러는 트루 블랙 `#000000`으로 설정했습니다. 버튼·주요 텍스트·강조 배너·포커스에 검정을 사용하고 회색과 아이보리를 보조색으로 사용합니다. 상세한 변경 이유는 [DESIGN.md](docs/DESIGN.md)에 기록했습니다.
 
-배포 도메인은 `SITE_URL`로 지정합니다. 미지정 시 현재 Sites 검토 주소를 사용합니다. 실제 브랜드 도메인 배포 시 `.env.example`처럼 `SITE_URL=https://yangmal.kr`을 설정합니다. `.env.example`은 예시이며 비밀키를 넣지 않습니다.
+배포 도메인은 `SITE_URL`로 지정하며 기본값은 `https://yangmal.kr`입니다. `.env.example`은 예시이며 비밀키를 넣지 않습니다.
 
 원본에 있는 가격·판매 예정 상태·회사 정보는 임시 콘텐츠로 이관했습니다. 공개 서비스 전 최종 상품 정보와 실제 이미지, 상품별 구매 링크를 확정해야 합니다.
