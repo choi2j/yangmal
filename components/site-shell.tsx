@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { ArrowUpRight, Menu, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -37,12 +37,6 @@ export function Header({ content }: { content: SiteContent }) {
     (href === '/products' && pathname.startsWith('/product/'));
   return (
     <>
-      <div className="announcement">
-        {t(
-          '매일의 편안함을 만드는 양말, NINESOCKS',
-          'Made for everyday comfort. NINESOCKS.',
-        )}
-      </div>
       <header className="site-header">
         <div className="container header-inner">
           <Brand />
@@ -124,7 +118,6 @@ export function Header({ content }: { content: SiteContent }) {
                       onClick={() => setMenuOpen(false)}
                     >
                       {link.label}
-                      <ArrowUpRight size={18} />
                     </Link>
                   ))}
                   <div className="mobile-categories">
@@ -237,7 +230,6 @@ export function StoreBanner({ url }: { url: string }) {
     <section className="store-banner">
       <div className="container store-banner-inner">
         <div>
-          <p className="eyebrow">FIND YOUR EVERYDAY PAIR</p>
           <h2>
             {t(
               '당신의 다음 발걸음을 함께할 양말.',
@@ -252,7 +244,7 @@ export function StoreBanner({ url }: { url: string }) {
           </p>
         </div>
         <a
-          className="button-link light"
+          className="button-link"
           href={url}
           target="_blank"
           rel="noopener noreferrer"
@@ -275,7 +267,6 @@ export function TextLink({
   return (
     <Link className="text-link" href={href}>
       {children}
-      <ArrowRight size={16} />
     </Link>
   );
 }

@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Truck,
   ShieldCheck,
-  ArrowRight,
 } from 'lucide-react';
 import type { Category, Product, SiteContent } from '@/lib/content/types';
 import { canPurchase } from '@/lib/content/catalog';
@@ -142,7 +141,6 @@ export function ProductPage({
                 </p>
                 <Link href="/contact">
                   {t('상품 문의하기', 'Ask about this product')}
-                  <ArrowRight size={15} />
                 </Link>
               </div>
             )}
@@ -213,7 +211,6 @@ export function ProductPage({
             </p>
             <Link className="text-link" href="/contact">
               {t('문의하기', 'Contact us')}
-              <ArrowUpRight size={16} />
             </Link>
           </div>
           <Accordion className="shopping-faq">
@@ -278,7 +275,6 @@ export function ProductPage({
             </div>
             <Link className="text-link" href="/products">
               {t('전체 보기', 'View all')}
-              <ArrowRight size={16} />
             </Link>
           </div>
           <div className="product-grid related-grid">

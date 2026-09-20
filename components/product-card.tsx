@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 import type { Product, SiteContent } from '@/lib/content/types';
 import {
   productPath,
@@ -55,31 +54,22 @@ export function ProductCard({
       <Link href={productPath(product, content)} className="product-card-link">
         <div className="product-card-media">
           <Media asset={product.images[0]} slot="product" />
-          <span
-            className={`status-badge ${product.availability === 'available' ? 'available' : ''}`}
-          >
-            {product.availability === 'available'
-              ? t('판매 중', 'Available')
-              : product.availability === 'sold-out'
-                ? t('품절', 'Sold out')
-                : t('판매 예정', 'Coming soon')}
-          </span>
-          <span className="product-card-arrow" aria-hidden="true">
-            <ArrowUpRight size={20} />
-          </span>
         </div>
         <div className="product-card-info">
           <p className="card-category">
             {category ? pick(category.name) : 'NINESOCKS'}
+            <span aria-hidden="true">·</span>
+            <span>
+              {product.availability === 'available'
+                ? t('판매 중', 'Available')
+                : product.availability === 'sold-out'
+                  ? t('품절', 'Sold out')
+                  : t('판매 예정', 'Coming soon')}
+            </span>
           </p>
           <h3>{pick(product.name)}</h3>
           <p className="card-summary">{pick(product.summary)}</p>
           <Price product={product} />
-          <div className="feature-tags">
-            {product.features.slice(0, 2).map((feature) => (
-              <span key={feature.ko}>{pick(feature)}</span>
-            ))}
-          </div>
         </div>
       </Link>
     </article>

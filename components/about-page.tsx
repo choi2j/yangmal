@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { ArrowUpRight, Layers, Footprints, HeartHandshake } from 'lucide-react';
+import { Layers, Footprints, HeartHandshake } from 'lucide-react';
 import type { SiteContent } from '@/lib/content/types';
 import { useLanguage } from './language-provider';
 import { Media } from './media';
@@ -123,7 +123,6 @@ export function AboutPage({ content }: { content: SiteContent }) {
           </p>
           <Link className="button-link" href="/contact">
             {t('사업 문의하기', 'Talk to us')}
-            <ArrowUpRight size={18} />
           </Link>
         </div>
       </section>

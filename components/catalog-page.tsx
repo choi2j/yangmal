@@ -1,6 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { Search, ArrowRight, SlidersHorizontal } from 'lucide-react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import type { SiteContent } from '@/lib/content/types';
 import { filterProducts, type CatalogSort } from '@/lib/content/catalog';
 import { Button } from '@/components/ui/button';
@@ -56,7 +56,6 @@ export function CatalogPage({
                 )}
           </p>
         </div>
-        <span className="intro-index">N° 01—04</span>
       </section>
       <section
         className="container catalog-section"
@@ -161,7 +160,6 @@ export function CatalogPage({
               }}
             >
               {t('전체 상품 보기', 'Show all socks')}
-              <ArrowRight size={16} />
             </Button>
           </div>
         )}

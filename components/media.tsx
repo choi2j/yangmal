@@ -48,7 +48,7 @@ export function Media({
           fetchPriority={priority ? 'high' : 'auto'}
           style={{
             ...(naturalDetail ? { display: 'block', width: '100%', height: 'auto' } : {}),
-            objectFit: naturalDetail ? 'contain' : slot === 'product' ? 'cover' : asset.fit,
+            objectFit: naturalDetail ? 'contain' : slot === 'product' || slot === 'gallery' ? 'cover' : asset.fit,
             objectPosition: asset.focalPoint
               ? `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%`
               : '50% 50%',
@@ -61,12 +61,8 @@ export function Media({
           role="img"
           aria-label={`${alt} · ${t('이미지 준비 중', 'Image coming soon')}`}
         >
-          <span className="placeholder-brand">NINESOCKS</span>
-          <span className="placeholder-label">
-            {asset?.label ?? 'PRODUCT IMAGE'}
-          </span>
-          <span className="placeholder-size" aria-hidden="true">
-            {size.width} × {size.height}
+          <span className="placeholder-label" aria-hidden="true">
+            {t('이미지 준비 중', 'Image coming soon')}
           </span>
         </div>
       )}
